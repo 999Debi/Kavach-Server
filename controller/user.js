@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../model/user.js";
 
 // Register a new user
-export const register = async (req, res, next) => {
+export const register = async (req, res) => {
   const { mobile, username, password } = req.body;
 
   try {
@@ -17,12 +17,12 @@ export const register = async (req, res, next) => {
     await newuser.save();
     res.json({ message: "Registration successful" });
   } catch (error) {
-    next(error);
+
   }
 };
 
 // Login with an existing user
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
   const { mobile, password } = req.body;
 
   try {
@@ -45,6 +45,36 @@ export const login = async (req, res, next) => {
     );
     res.status(200).json({ token });
   } catch (error) {
-    next(error);
+  
   }
 };
+
+export const chnagePassword= async(req,res)=>{
+  const {mobile,password,newPassword}=req.body;
+
+  try {
+        const user = await User.findOne({ mobile });
+            const passwordMatch = await user.comparePassword(password);
+            if (!passwordMatch) {
+              return res.status(401).json({ message: "Incorrect password" });
+            }
+          user.password=newPassword;
+          await user.save();
+          res.status(200).json({message: "Password changed successfully"})
+
+  } catch (error) {
+
+  }
+}
+
+export const addContact = async (req,res)=>{
+  const {name,email,mobile,usermobile}=req.body;
+  try {
+    const user = await User.findOne({ mobile:usermobile});   
+    user.contacts.push({name,email,mobile});
+    await user.save();
+    res.status(200).json({ message: "Contact added successfully" });
+  } catch (error) {
+    
+  }
+}
