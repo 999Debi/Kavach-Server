@@ -4,16 +4,20 @@ const sensorDataSchema = new mongoose.Schema(
   {
     longitude: {
       type: String,
-      required: true,
+      default:""
     },
     latitude: {
       type: String,
-      required: true,
+      default:""
     },
     mobile: {
       type: String,
       required: true,
     },
+    accidentHistory:{
+      type: Array,
+      default:[]
+    }
     
   },
   { timestamps: true }

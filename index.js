@@ -10,7 +10,7 @@ import connectDB from "./connect.js";
 
 
 import authRouter from "./routes/auth.js";
-import alertRouter from "./routes/alert.js";
+import vehicleRouter from "./routes/vehicle.js";
 
 const app = express();
 app.use(cors());
@@ -27,7 +27,7 @@ const server = http.createServer(app);
 
 
 app.use("/auth", authRouter);
-app.use("/alert", alertRouter);
+app.use("/", vehicleRouter);
 
 io.on("connection", (socket) => {
   // Handle connections

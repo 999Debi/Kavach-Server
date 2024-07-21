@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import User from "../model/user.js";
-
+import SensorData from "../model/vehicle.js";
 // Register a new user
-export const register = async (req, res) => {
+const register = async (req, res) => {
   const { mobile, username, password } = req.body;
 
   try {
@@ -15,6 +15,10 @@ export const register = async (req, res) => {
 
     const newuser = new User({ username, mobile, password });
     await newuser.save();
+    const userVehicle = new SensorData({
+      mobile,
+    });
+    await userVehicle.save();
     res.json({ message: "Registration successful" });
   } catch (error) {
 
@@ -22,7 +26,7 @@ export const register = async (req, res) => {
 };
 
 // Login with an existing user
-export const login = async (req, res) => {
+const login = async (req, res) => {
   const { mobile, password } = req.body;
 
   try {
@@ -49,7 +53,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const chnagePassword= async(req,res)=>{
+const chnagePassword= async(req,res)=>{
   const {mobile,password,newPassword}=req.body;
 
   try {
@@ -67,7 +71,7 @@ export const chnagePassword= async(req,res)=>{
   }
 }
 
-export const addContact = async (req,res)=>{
+const addContact = async (req,res)=>{
   const {name,email,mobile,usermobile}=req.body;
   try {
     const user = await User.findOne({ mobile:usermobile});   
@@ -78,3 +82,5 @@ export const addContact = async (req,res)=>{
     
   }
 }
+
+export {register,login,chnagePassword,addContact};
