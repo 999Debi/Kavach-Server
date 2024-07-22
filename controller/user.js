@@ -47,13 +47,13 @@ const login = async (req, res) => {
         expiresIn: "1 hour",
       }
     );
-    res.status(200).json({ token });
+    res.status(200).json({ token ,username:user.username, mobile:user.mobile});
   } catch (error) {
   
   }
 };
 
-const chnagePassword= async(req,res)=>{
+const changePassword= async(req,res)=>{
   const {mobile,password,newPassword}=req.body;
 
   try {
@@ -76,11 +76,22 @@ const addContact = async (req,res)=>{
   try {
     const user = await User.findOne({ mobile:usermobile});   
     user.contacts.push({name,email,mobile});
+    let contacts = user.contacts;
     await user.save();
-    res.status(200).json({ message: "Contact added successfully" });
+    res.status(200).json({ message: "Contact added successfully"});
   } catch (error) {
     
   }
 }
 
-export {register,login,chnagePassword,addContact};
+const allContacts= async(req,res)=>{
+  const {mobile}=req.body;
+  try {
+    const user = await User.findOne({ mobile });   
+    res.status(200).json({ contacts:user.contacts });
+  } catch (error) {
+    
+  }
+}
+
+export {register,login,changePassword,addContact,allContacts};
