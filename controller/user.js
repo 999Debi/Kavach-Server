@@ -21,7 +21,7 @@ const register = async (req, res) => {
     await userVehicle.save();
     res.json({ message: "Registration successful" });
   } catch (error) {
-
+res.status(500).json({ message: "Internal server error!" });
   }
 };
 
@@ -49,7 +49,7 @@ const login = async (req, res) => {
     );
     res.status(200).json({ token ,username:user.username, mobile:user.mobile});
   } catch (error) {
-  
+  res.status(500).json({ message: "Internal server error!" });
   }
 };
 
@@ -67,7 +67,7 @@ const changePassword= async(req,res)=>{
           res.status(200).json({message: "Password changed successfully"})
 
   } catch (error) {
-
+res.status(500).json({ message: "Internal server error!" });
   }
 }
 
@@ -80,7 +80,7 @@ const addContact = async (req,res)=>{
     await user.save();
     res.status(200).json({ message: "Contact added successfully"});
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error!" });
   }
 }
 
@@ -90,7 +90,7 @@ const allContacts= async(req,res)=>{
     const user = await User.findOne({ mobile });   
     res.status(200).json({ contacts:user.contacts });
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error!" });
   }
 }
 
